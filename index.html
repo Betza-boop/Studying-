@@ -29,14 +29,20 @@
             }
         }
     </script>
-    <!-- FontAwesome para Iconos Médicos -->
+    <!-- FontAwesome for medical icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        body {
+        /* Force vertical scrolling globally across the entire page and containers */
+        html, body {
+            overflow-y: auto !important;
+            height: auto !important;
+            min-height: 100vh;
             background-color: #0B0F19;
             color: #F3F4F6;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, sans-serif;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, "Helvetica Neue", sans-serif;
+            scroll-behavior: smooth;
         }
+        /* Custom scrollbar */
         ::-webkit-scrollbar {
             width: 8px;
         }
@@ -52,10 +58,10 @@
         }
     </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased">
+<body class="flex flex-col antialiased" style="overflow-y: auto !important; height: auto !important; min-height: 100vh;">
 
-    <!-- Encabezado / Barra de Navegación -->
-    <header class="bg-clinical-surface border-b border-clinical-border sticky top-0 z-40">
+    <!-- Header / Navbar (Relative positioning to prevent overlapping content/buttons) -->
+    <header class="bg-clinical-surface border-b border-clinical-border relative z-40">
         <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col md:flex-row items-center justify-between gap-4">
             <div class="flex items-center gap-3">
                 <div class="bg-clinical-primary/20 p-2 rounded-xl border border-clinical-primaryLight/30">
@@ -69,7 +75,7 @@
                 </div>
             </div>
             
-            <!-- Entrada Opcional de API Key de Gemini -->
+            <!-- Global Key Input -->
             <div class="flex items-center gap-2 w-full md:w-auto">
                 <div class="relative w-full">
                     <i class="fa-solid fa-key absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
@@ -80,8 +86,8 @@
         </div>
     </header>
 
-    <!-- Pestañas de la Aplicación -->
-    <div class="bg-clinical-surface border-b border-clinical-border sticky top-[69px] z-30">
+    <!-- App Tabs (Relative positioning to ensure buttons and tabs are never blocked) -->
+    <div class="bg-clinical-surface border-b border-clinical-border relative z-30">
         <div class="max-w-6xl mx-auto px-4 flex justify-around">
             <button onclick="switchTab('plan')" id="tab-btn-plan" class="flex-1 py-3 px-2 text-center border-b-2 border-clinical-primaryLight text-clinical-primaryLight font-bold text-sm flex items-center justify-center gap-2 transition hover:bg-clinical-bg/50">
                 <i class="fa-solid fa-hourglass-half"></i> <span class="hidden sm:inline">PLAN DE CHOQUE 48H</span><span class="sm:hidden">PLAN 48H</span>
@@ -95,12 +101,13 @@
         </div>
     </div>
 
-    <!-- Contenido Principal -->
-    <main class="flex-grow max-w-6xl w-full mx-auto px-4 py-6">
+    <!-- Main Container with Explicit Auto-Scrolling Layout -->
+    <main class="flex-grow max-w-6xl w-full mx-auto px-4 py-6" style="overflow-y: auto !important; height: auto !important; min-height: 100vh;">
 
         <!-- ================= PESTAÑA 1: PLAN DE CHOQUE 48H ================= -->
         <section id="tab-content-plan" class="space-y-6">
             
+            <!-- Welcome Info & Progress -->
             <div class="bg-clinical-surfaceVar rounded-2xl border border-clinical-border p-6 shadow-xl">
                 <div class="flex flex-col md:flex-row gap-6 items-center justify-between">
                     <div class="space-y-2 max-w-2xl">
@@ -109,12 +116,13 @@
                         </div>
                         <h2 class="text-2xl font-black text-white">Cronograma Intensivo de 2 Días</h2>
                         <p class="text-sm text-slate-300">
-                            Programa diseñado bajo el modelo evaluativo de la Universidad de las Ciencias de la Salud (UCS) en Venezuela. Registra tus temas con dificultad y genera un itinerario de estudio personalizado.
+                            Diseñado específicamente para repasar y dominar los contenidos prioritarios de la UCS venezolana. Procesa todos tus apuntes y obtén un cronograma clínico personalizado para maximizar tu nota.
                         </p>
                     </div>
-                    <div class="bg-clinical-bg/50 p-4 rounded-xl border border-clinical-border text-center min-w-[180px]">
+                    <!-- Circular/Linear Progress Display -->
+                    <div class="bg-clinical-bg/50 p-4 rounded-xl border border-clinical-border text-center min-w-[180px] w-full md:w-auto">
                         <span class="text-xs text-slate-400 font-bold block mb-1">PROGRESO DEL PLAN</span>
-                        <div class="text-3xl font-black text-clinical-primaryLight" id="progress-text">0 / 8</div>
+                        <div class="text-3xl font-black text-clinical-primaryLight" id="progress-text">0 / 10</div>
                         <span class="text-xs text-slate-500 block mb-2">Temas Completados</span>
                         <div class="w-full bg-clinical-surfaceVar h-2.5 rounded-full overflow-hidden">
                             <div class="bg-clinical-primary h-full transition-all duration-500" id="progress-bar" style="width: 0%"></div>
@@ -123,23 +131,24 @@
                 </div>
             </div>
 
-            <!-- Diagnóstico con IA -->
+            <!-- AI Diagnostician and Scheduler -->
             <div class="bg-clinical-surface rounded-2xl border border-clinical-border p-6 shadow-lg space-y-4">
                 <div class="flex items-center gap-2">
                     <i class="fa-solid fa-wand-magic-sparkles text-clinical-accent"></i>
                     <h3 class="text-lg font-bold text-white">Diagnóstico de Debilidades con IA</h3>
                 </div>
                 <p class="text-xs text-slate-400">
-                    Introduce los temas clínicos que te cuestan dominar (ej: <i>saponificación de grasas, ley de Hardy-Weinberg, apoptosis, etc.</i>).
+                    Escribe qué temas te cuestan más (ej. <i>necrosis caseosa, Hardy-Weinberg, tumefacción celular, etc.</i>). El Tutor Clínico UCS generará de inmediato un plan de choque adaptado a tus necesidades para las próximas 48 horas.
                 </p>
                 <div class="flex flex-col sm:flex-row gap-3">
-                    <input type="text" id="weak-areas-input" placeholder="Ej: No entiendo bien el aclaramiento de la necrosis caseosa..." 
+                    <input type="text" id="weak-areas-input" placeholder="Ej: No entiendo las aberraciones cromosómicas ni el cálculo de portadores..." 
                            class="flex-grow bg-clinical-bg text-sm rounded-xl px-4 py-3 border border-clinical-border focus:border-clinical-primary focus:outline-none text-slate-100 placeholder-slate-500">
                     <button onclick="generateSchedule()" id="diagnostic-btn" class="bg-clinical-primary hover:bg-clinical-primary/80 text-white font-bold text-sm px-6 py-3 rounded-xl transition flex items-center justify-center gap-2 shrink-0">
                         <i class="fa-solid fa-stethoscope"></i> Diagnosticar con IA
                     </button>
                 </div>
 
+                <!-- Diagnostic AI Output -->
                 <div id="diagnostic-output" class="hidden bg-clinical-surfaceVar border border-clinical-primary/30 rounded-xl p-4 space-y-3">
                     <div class="flex items-center justify-between">
                         <h4 class="text-sm font-bold text-clinical-primaryLight flex items-center gap-2">
@@ -149,16 +158,21 @@
                             <i class="fa-solid fa-circle-xmark"></i> Ocultar
                         </button>
                     </div>
-                    <div class="text-xs text-slate-200 leading-relaxed whitespace-pre-line" id="diagnostic-text"></div>
+                    <div class="text-xs text-slate-200 leading-relaxed whitespace-pre-line text-justify" id="diagnostic-text">
+                        <!-- AI plan goes here -->
+                    </div>
                 </div>
             </div>
 
-            <!-- Mapa de Ruta de los 4 Bloques -->
+            <!-- The 4 Clinical Blocks Roadmap -->
             <div class="space-y-4">
                 <h3 class="text-lg font-bold text-white flex items-center gap-2">
                     <i class="fa-solid fa-route text-clinical-primaryLight"></i> Ruta del Plan de Choque (4 Bloques Clave)
                 </h3>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="blocks-container"></div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="blocks-container">
+                    <!-- Dynamic rendering via JS -->
+                </div>
             </div>
 
         </section>
@@ -167,29 +181,42 @@
         <section id="tab-content-study" class="hidden space-y-6">
             
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Selectores de Contenido (Lateral) -->
+                <!-- Navigation Sidebar (Blocks & Themes) -->
                 <div class="space-y-4 lg:col-span-1">
                     <div class="bg-clinical-surface rounded-2xl border border-clinical-border p-4 space-y-4">
                         <h3 class="text-sm font-bold text-clinical-primaryLight tracking-wider uppercase">Bloques del Programa</h3>
-                        <div class="flex flex-col gap-2" id="study-blocks-list"></div>
+                        <div class="flex flex-col gap-2" id="study-blocks-list">
+                            <!-- Dynamic blocks -->
+                        </div>
                     </div>
+
                     <div class="bg-clinical-surface rounded-2xl border border-clinical-border p-4 space-y-4">
                         <h3 class="text-sm font-bold text-clinical-primaryLight tracking-wider uppercase">Temas Clínicos</h3>
-                        <div class="flex flex-col gap-2" id="study-themes-list"></div>
+                        <div class="flex flex-col gap-2" id="study-themes-list">
+                            <!-- Dynamic themes list -->
+                        </div>
                     </div>
                 </div>
 
-                <!-- Detalles del Tema y Tarjetas -->
+                <!-- Study Materials Column -->
                 <div class="lg:col-span-2 space-y-6">
                     
+                    <!-- Content Card -->
                     <div class="bg-clinical-surface rounded-2xl border border-clinical-border p-6 space-y-6" id="study-content-card">
+                        <!-- Header -->
                         <div class="flex items-center justify-between flex-wrap gap-3">
                             <h3 class="text-xl font-black text-white" id="study-theme-title">Selecciona un tema</h3>
-                            <button id="mark-complete-btn" class="bg-clinical-primary/10 border border-clinical-primary/30 text-clinical-primaryLight text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-clinical-primary/20 transition flex items-center gap-1">
-                                <i class="fa-solid fa-circle-check"></i> Marcar como Completado
-                            </button>
+                            <div class="flex items-center gap-2">
+                                <button id="mark-complete-btn" class="bg-clinical-primary/10 border border-clinical-primary/30 text-clinical-primaryLight text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-clinical-primary/20 transition flex items-center gap-1">
+                                    <i class="fa-solid fa-circle-check"></i> Marcar como Completado
+                                </button>
+                                <button onclick="switchTab('simulator')" class="bg-clinical-accent/20 border border-clinical-accent/30 text-clinical-accent text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-clinical-accent/30 transition flex items-center gap-1">
+                                    <i class="fa-solid fa-circle-play"></i> Ir al Simulador
+                                </button>
+                            </div>
                         </div>
 
+                        <!-- Synthesis -->
                         <div class="space-y-2">
                             <h4 class="text-xs font-bold text-clinical-secondary uppercase tracking-widest flex items-center gap-1">
                                 <i class="fa-solid fa-heart-pulse"></i> Fisiopatología, Clínica y Abordaje Comunitario (APS)
@@ -201,24 +228,29 @@
 
                         <hr class="border-clinical-border">
 
+                        <!-- Focus Points -->
                         <div class="space-y-3">
                             <h4 class="text-xs font-bold text-clinical-accent uppercase tracking-widest flex items-center gap-1">
                                 <i class="fa-solid fa-bullseye"></i> Puntos Focalizados UCS (Lo que van a preguntar)
                             </h4>
-                            <ul class="space-y-2 text-xs text-slate-300" id="study-theme-focus"></ul>
+                            <ul class="space-y-2 text-xs text-slate-300" id="study-theme-focus">
+                                <!-- Focus points list -->
+                            </ul>
                         </div>
                     </div>
 
-                    <!-- Flashcards de Repaso Rápido -->
+                    <!-- Interactive Flashcards -->
                     <div class="bg-clinical-surface rounded-2xl border border-clinical-border p-6 space-y-4">
                         <h3 class="text-base font-bold text-white flex items-center gap-2">
                             <i class="fa-solid fa-bolt text-clinical-accent"></i> Tarjetas de Memorización Inmediata (High-Yield)
                         </h3>
                         <p class="text-xs text-slate-400">Haz clic en cada tarjeta para revelar los datos clave y nemotecnias críticas del examen.</p>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="study-flashcards-container"></div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="study-flashcards-container">
+                            <!-- Flashcards -->
+                        </div>
                     </div>
 
-                    <!-- Bloc de Notas Clínicas Persistente (LocalStorage) -->
+                    <!-- Personal Notes Room/LocalStorage Persistency -->
                     <div class="bg-clinical-surface rounded-2xl border border-clinical-border p-6 space-y-4">
                         <h3 class="text-base font-bold text-white flex items-center gap-2">
                             <i class="fa-solid fa-pen-to-square text-clinical-primaryLight"></i> Mis Notas Clínicas (Persistencia Local)
@@ -245,7 +277,7 @@
         <section id="tab-content-simulator" class="hidden space-y-6">
             
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Navegador de Preguntas e Historial -->
+                <!-- Question Sidebar -->
                 <div class="space-y-4 lg:col-span-1">
                     <div class="bg-clinical-surface rounded-2xl border border-clinical-border p-4 space-y-4">
                         <div class="flex items-center justify-between">
@@ -254,38 +286,49 @@
                                 <i class="fa-solid fa-rotate-left"></i> Reiniciar
                             </button>
                         </div>
-                        <div class="grid grid-cols-3 sm:grid-cols-6 lg:grid-cols-3 gap-2" id="sim-questions-grid"></div>
+                        <div class="grid grid-cols-3 sm:grid-cols-6 lg:grid-cols-3 gap-2" id="sim-questions-grid">
+                            <!-- Question indexes -->
+                        </div>
                     </div>
 
+                    <!-- Exam Attempts / History -->
                     <div class="bg-clinical-surface rounded-2xl border border-clinical-border p-4 space-y-4">
                         <div class="flex items-center justify-between">
                             <h3 class="text-sm font-bold text-clinical-primaryLight tracking-wider uppercase">Historial de Intentos</h3>
                             <button onclick="clearHistory()" class="text-xs text-clinical-incorrect hover:underline">Borrar</button>
                         </div>
-                        <div class="space-y-2 text-xs" id="sim-attempts-history"></div>
+                        <div class="space-y-2 text-xs" id="sim-attempts-history">
+                            <!-- Attempts list -->
+                        </div>
                     </div>
                 </div>
 
-                <!-- Área Activa de Pregunta -->
+                <!-- Quiz Engine Content Column -->
                 <div class="lg:col-span-2 space-y-6">
                     <div class="bg-clinical-surface rounded-2xl border border-clinical-border p-6 space-y-6">
                         
+                        <!-- Question Header -->
                         <div class="flex items-center justify-between flex-wrap gap-2">
-                            <span class="text-xs font-bold text-clinical-secondary uppercase tracking-widest" id="sim-question-type">CASO CLÍNICO</span>
+                            <span class="text-xs font-bold text-clinical-secondary uppercase tracking-widest" id="sim-question-type">CASO CLÍNICO-COMUNITARIO</span>
                             <span class="text-xs bg-clinical-surfaceVar border border-clinical-border text-slate-300 font-bold px-2 py-1 rounded-md" id="sim-question-index">Pregunta 1 de 6</span>
                         </div>
 
-                        <h3 class="text-lg font-bold text-white text-justify leading-relaxed" id="sim-question-text">Cargando pregunta...</h3>
+                        <!-- Question Text -->
+                        <h3 class="text-lg font-bold text-white text-justify leading-relaxed" id="sim-question-text">
+                            Cargando pregunta...
+                        </h3>
 
-                        <!-- Opciones según el Tipo -->
-                        <div id="sim-options-container" class="space-y-3 hidden"></div>
+                        <!-- Answer Input Space -->
+                        <div id="sim-options-container" class="space-y-3 hidden">
+                            <!-- Radios for Multiple choice -->
+                        </div>
                         <div id="sim-text-container" class="space-y-2">
                             <label class="text-xs font-semibold text-slate-400">Tu respuesta fundamentada basada en la literatura UCS:</label>
                             <textarea id="sim-text-input" placeholder="Escribe detalladamente tu respuesta y razonamiento clínico..." 
                                       class="w-full h-36 bg-clinical-bg text-sm rounded-xl p-4 border border-clinical-border focus:border-clinical-primary focus:outline-none text-slate-100 placeholder-slate-600 resize-none"></textarea>
                         </div>
 
-                        <!-- Fila de Acciones -->
+                        <!-- Actions row -->
                         <div class="flex items-center justify-between gap-4 pt-2">
                             <button onclick="prevQuestion()" id="sim-prev-btn" class="bg-clinical-surfaceVar hover:bg-clinical-surfaceVar/80 text-white font-bold text-xs px-4 py-2.5 rounded-lg transition disabled:opacity-30 disabled:pointer-events-none">
                                 <i class="fa-solid fa-arrow-left"></i> Anterior
@@ -296,4 +339,993 @@
                             </button>
 
                             <button onclick="nextQuestion()" id="sim-next-btn" class="bg-clinical-surfaceVar hover:bg-clinical-surfaceVar/80 text-white font-bold text-xs px-4 py-2.5 rounded-lg transition disabled:opacity-30 disabled:pointer-events-none">
-                             
+                                Siguiente <i class="fa-solid fa-arrow-right"></i>
+                            </button>
+                        </div>
+
+                        <!-- Detailed Grading Feedback from UCS Tutor -->
+                        <div id="grading-output" class="hidden bg-clinical-surfaceVar rounded-xl border p-5 space-y-3 transition-all duration-300">
+                            <div class="flex items-center gap-2">
+                                <span id="grading-icon" class="text-lg"></span>
+                                <h4 class="text-sm font-bold" id="grading-status">Evaluando respuesta...</h4>
+                            </div>
+                            <p class="text-xs text-slate-200 leading-relaxed whitespace-pre-line text-justify" id="grading-feedback">
+                                El Tutor Clínico UCS está analizando tu respuesta médica en base a los criterios del PNF-MIC...
+                            </p>
+                        </div>
+
+                    </div>
+
+                    <!-- Finalize Exam Box -->
+                    <div class="bg-clinical-surface rounded-2xl border border-clinical-border p-6 text-center space-y-4">
+                        <h4 class="text-base font-bold text-white">¿Has terminado el simulacro de examen?</h4>
+                        <p class="text-xs text-slate-400">Guarda el resultado en tu historial persistente de la UCS para realizar el seguimiento de tu nota.</p>
+                        <button onclick="submitFullExam()" class="bg-clinical-accent hover:bg-clinical-accent/80 text-clinical-bg font-black text-sm px-8 py-3 rounded-xl transition shadow-lg inline-flex items-center gap-2">
+                            <i class="fa-solid fa-square-poll-vertical text-lg"></i> Finalizar y Guardar Intento (Escala 0-20)
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-clinical-surface border-t border-clinical-border mt-12 py-6 text-center text-xs text-slate-500 space-y-2">
+        <p>© 2026 Tutor Clínico UCS • Especialista en Morfofisiopatología Humana I • Medicina Integral Comunitaria (Barrio Adentro)</p>
+        <p class="text-[10px] text-slate-600">Herramienta educativa interactiva optimizada para planes de estudio intensivos de 48 horas.</p>
+    </footer>
+
+    <!-- ================= JAVASCRIPT LOGIC ================= -->
+    <script>
+        // High-Yield Curriculum Database
+        const blocks = [
+            {
+                id: 1,
+                title: "Bloque 1: Patología Celular y Tisular General",
+                priority: "Máxima Priority (High-Yield)",
+                hours: "12 Horas",
+                description: "Estudio del fundamento de la lesión celular reversible e irreversible, acumulaciones intracelulares y calcificaciones patológicas.",
+                themes: [
+                    {
+                        id: "t1",
+                        title: "Tema 1: Métodos de Estudio y Muestras",
+                        synthesis: "La Morfofisiopatología Humana estudia la etiopatogenia y alteraciones morfofuncionales. La muestra biológica es la porción de tejido o fluido obtenida para diagnóstico. Requisitos clave: indicación precisa, orientación (ej. ayuno de 8-12h para lípidos), evitar ejercicio físico intenso, consentimiento informado (bioética). Laboratorios: Anatomía Patológica (biopsias, citologías, necropsias), Lab Clínico (fluidos), Genética (cromosomas, cariotipo), Imagenología (ecografía, TAC, RMN sin radiación perjudicial).",
+                        focusPoints: [
+                            "Diferencia entre Biopsia Incisional (extirpación de fragmento) y Excisional (extirpación completa de lesión pequeña con margen > 1cm).",
+                            "Los requisitos de toma de muestra y consideraciones bioéticas (consentimiento informado y confidencialidad).",
+                            "Tipos de Necropsia: Clínica (muerte natural) vs Médico-Legal (muertes violentas o sospechosas)."
+                        ],
+                        flashcards: [
+                            { q: "¿Qué es una biopsia por congelación o transoperatoria?", a: "Se realiza en el curso de una cirugía para brindar diagnóstico rápido (benigno/maligno) y orientar la conducta quirúrgica inmediata." },
+                            { q: "¿Qué requisitos analíticos altera el ejercicio físico intenso?", a: "Modifica parámetros como glucosa, triglicéridos, ácido úrico y urea en sangre." },
+                            { q: "¿Cuáles son los estudios citogenéticos principales?", a: "Estudio del cariotipo humano (trastornos cromosómicos), cromatina sexual (cuerpo de Barr) y estudio cromosómico molecular." }
+                        ]
+                    },
+                    {
+                        id: "t2_rev",
+                        title: "Tema 2: Lesión Celular Reversible",
+                        synthesis: "La lesión reversible ocurre cuando la célula sufre un daño no mortal que desaparece al retirar el estímulo lesivo. Se manifiesta en dos patrones: 1) Tumefacción celular (cambio hidrópico): pérdida de función de las bombas Na-K dependientes de ATP por hipoxia/isquemia, resultando en entrada de agua y sodio a la célula (vacuolas claras de agua en túbulos renales, hígado, miocardio). 2) Metamorfosis grasa (esteatosis): acumulación anómala de triglicéridos en vacuolas de grasa en el hígado (hepatocitos), causada por alcoholismo o dieta grasa. Diagnóstico: elevación de transaminasas (AST/ALT) y ecografía de ecogenicidad aumentada (hígado graso).",
+                        focusPoints: [
+                            "Mecanismo de la tumefacción celular: falla de la bomba de sodio-potasio por depleción de ATP, causando hinchazón celular con vacuolas claras de agua (negativas a tinción Sudan/Rojo Oleoso y PAS).",
+                            "Diferenciación de vacuolas en citoplasma: Grasa se tiñe de anaranjado con Rojo Oleoso o Sudán IV. Glucógeno se tiñe de rosado intenso con PAS (Ácido Periódico de Schiff). Agua no se tiñe (vacuola transparente).",
+                            "La isquemia es la causa más frecuente de hipoxia y lesión celular reversible."
+                        ],
+                        flashcards: [
+                            { q: "¿Qué produce el fallo de la bomba de sodio-potasio en la hipoxia?", a: "Aumento del sodio intracelular, salida de potasio y entrada pasiva de agua, provocando hinchazón celular o vacuolización hidrópica." },
+                            { q: "¿Cuáles son los órganos más afectados por la metamorfosis grasa?", a: "El hígado y el corazón, ya que son los órganos con mayor dependencia y procesamiento del metabolismo lipídico." },
+                            { q: "¿Cómo se observa el hígado con esteatosis en una ecografía?", a: "Se observa un hígado aumentado de tamaño con ecogenicidad aumentada (imagen de color blanquecino brillante)." }
+                        ]
+                    },
+                    {
+                        id: "t2_irrev",
+                        title: "Tema 2: Lesión Irreversible y Muerte Celular",
+                        synthesis: "La persistencia del daño celular progresa a la lesión irreversible, caracterizada por muerte celular: Necrosis (patológica, digestión enzimática y desnaturalización proteica, induce inflamación) o Apoptosis (programada, eliminación de células innecesarias, sin inflamación). Patrones de Necrosis: Coagulativa (desnaturalización proteica por isquemia en miocardio/riñón; microscopía: eosinofilia con conservación de contornos celulares o 'imagen en fantasma'); Licuefactiva (digestión enzimática rápida por autólisis/heterólisis en cerebro por isquemia); Caseosa (aspecto de queso seco, Mycobacterium tuberculosis, rodeada por granuloma de células epitelioides y gigantes); Enzimática de las grasas (pancreatitis aguda, liberación de lipasas que saponifican grasas formando focos calcáreos blanquecinos 'jabones de calcio').",
+                        focusPoints: [
+                            "Diferenciar cambios nucleares de necrosis: Picnosis (encogimiento y basofilia), Cariolisis (desvanecimiento de cromatina), Cariorrexis (fragmentación nuclear).",
+                            "Consecuencias de la necrosis dependen de la extensión, importancia funcional del órgano, reserva funcional y capacidad de regeneración celular.",
+                            "Apoptosis se caracteriza por constricción celular, condensación de cromatina bajo la membrana nuclear, formación de cuerpos apoptóticos y fagocitosis rápida sin liberar contenido al espacio extracelular, evitando la inflamación."
+                        ],
+                        flashcards: [
+                            { q: "¿Cuál es la causa típica de la necrosis colicuativa o licuefactiva?", a: "Isquemia o infarto en el sistema nervioso central (cerebro) y en infecciones bacterianas purulentas focalizadas (abscesos)." },
+                            { q: "¿Qué tipo de necrosis es característica de la tuberculosis?", a: "La necrosis caseosa, que macroscópicamente parece queso seco granular y microscópicamente carece de contornos celulares y está rodeada por una pared inflamatoria granulomatosa." },
+                            { q: "¿Cuáles son los tres factores de los que dependen las consecuencias de la necrosis?", a: "La extensión, la importancia funcional del órgano y la capacidad de regeneración de las células no lesionadas." }
+                        ]
+                    },
+                    {
+                        id: "t2_acum",
+                        title: "Tema 2: Acumulaciones Intracelulares y Calcificaciones",
+                        synthesis: "Las acumulaciones intracelulares resultan de alteraciones metabólicas. Tipos: 1) Constituyentes normales en exceso (agua en tumefacción, grasa en esteatosis, glucógeno en diabetes, colesterol en ateromas). 2) Sustancias anormales endógenas (alfa-1 antitripsina en cirrosis) o exógenas (antracosis por carbón en pulmón). Aterosclerosis: formación de placas lipídicas (ateromas) con cristales de colesterol y macrófagos espumosos en la íntima de arterias de gran/mediano calibre. Diabetes Mellitus: tipo 1 (déficit absoluto de insulina, destrucción de células beta) y tipo 2 (resistencia a insulina y obesidad); causa microangiopatía con glomeruloesclerosis nodular de Kimmelstiel-Wilson en riñón. Calcificación Patológica: Distrófica (depósito de calcio en tejidos muertos/degenerados con niveles de calcio sérico normales, ej. válvulas cardiacas, tuberculosis caseosa) vs Metastásica (depósito en tejidos sanos secundario a hipercalcemia, ej. por hiperparatiroidismo o intoxicación por vitamina D).",
+                        focusPoints: [
+                            "La placa de ateroma se localiza en la íntima de arterias y sus complicaciones incluyen ulceración, trombosis, hemorragia, calcificación y dilatación aneurismática.",
+                            "Lesión patognomónica de la diabetes en el riñón: Glomeruloesclerosis nodular de Kimmelstiel-Wilson.",
+                            "Calcificación distrófica ocurre en zonas de necrosis o ateromas con calcemia normal; calcificación metastásica ocurre en intersticio de pulmones, riñón y mucosa gástrica por hipercalcemia."
+                        ],
+                        flashcards: [
+                            { q: "¿Qué son las células espumosas?", a: "Son macrófagos cargados de lípidos (colesterol) que fagocitan restos celulares grasos en la placa de ateroma o en estados hiperglicémicos." },
+                            { q: "¿Cuáles son los órganos diana de la calcificación metastásica?", a: "Los riñones, los pulmones, las arterias sistémicas y la mucosa gástrica, debido a su ambiente alcalino que favorece el depósito de calcio." },
+                            { q: "¿Qué causa la antracosis?", a: "La acumulación exógena de partículas de carbón inhaladas de la atmósfera urbana, acumulándose en los macrófagos alveolares y ganglios linfáticos pulmonares sin causar inflamación marcada." }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 2,
+                title: "Bloque 2: Inflamación y Reparación Tisular",
+                priority: "Muy Alta Priority (Core Clinical)",
+                hours: "12 Horas",
+                description: "Estrollo del proceso inflamatorio agudo y crónico, sus mediadores químicos, patrones morfológicos y los mecanismos de curación y cicatrización.",
+                themes: [
+                    {
+                        id: "t3_infl",
+                        title: "Tema 3: Respuesta Inflamatoria Aguda y Crónica",
+                        synthesis: "La inflamación es una respuesta protectora inespecífica que busca eliminar la causa inicial de la lesión. Inflamación Aguda: inicio rápido (minutos/horas), polimorfonucleares neutrófilos, exudación de líquido y proteínas. Signos cardinales: rubor, tumor (edema), calor, dolor e impotencia funcional. Acontecimientos celulares: marginación, rodamiento, adhesión (pavimentación), migración (diapédesis), quimiotaxis y fagocitosis. Inflamación Crónica: inicio lento, semanas o años, infiltrado de células mononucleares (linfocitos, macrófagos, células plasmáticas), destrucción tisular y reparación simultánea por fibrosis y angiogénesis. Mediadores químicos: histamina (primer mediador, vasodilatación, procede de mastocitos). Patrones: seroso (derrame acuoso), fibrinoso (exudado de fibrina, ej. pericarditis 'pan con mantequilla'), supurativo/purulento (abundantes neutrófilos y detritus, ej. meningitis, apendicitis), granulomatoso (acumulación de macrófagos epitelioides y células gigantes, típico de tuberculosis).",
+                        focusPoints: [
+                            "Diferencias morfológicas y celulares entre inflamación aguda (neutrófilos, exudado) y crónica (mononucleares, macrófagos, fibrosis, angiogénesis).",
+                            "Los acontecimientos celulares leucocitarios en orden secuencial: Marginación -> Rodamiento -> Adhesión -> Migración -> Quimiotaxis -> Fagocitosis.",
+                            "Evidencias analíticas de fase aguda: leucocitosis (neutrofilia en infecciones bacterianas, linfocitosis en virales, eosinofilia en parasitarias), aumento de la velocidad de sedimentación globular (VSG) y proteínas de fase aguda como la Proteína C Reactiva (PCR) y fibrinógeno."
+                        ],
+                        flashcards: [
+                            { q: "¿Qué mediador químico se considera el iniciador de la respuesta vascular en la inflamación aguda?", a: "La histamina, liberada de inmediato por los mastocitos, basófilos y plaquetas, que induce vasodilatación y aumento de la permeabilidad vascular." },
+                            { q: "¿Cómo se define el granuloma?", a: "Un patrón de inflamación crónica caracterizado por la acumulación focal de macrófagos activados (células epitelioides), rodeados de linfocitos y con presencia frecuente de células gigantes multinucleadas de tipo Langhans." },
+                            { q: "¿Qué tipo de leucocitos se eleva típicamente en una infección bacteriana aguda?", a: "Los polimorfonucleares neutrófilos (neutrofilia), reflejado en un aumento en el recuento del leucograma." }
+                        ]
+                    },
+                    {
+                        id: "t4_rep",
+                        title: "Tema 4: Reparación Tisular y Cicatrización",
+                        synthesis: "La reparación restituye la continuidad anatómica y funcional de un tejido dañado. Se da por: 1) Regeneración parenquimatosa: sustitución por células del mismo tipo, ocurre en células lábiles (piel, mucosas, médula ósea) o estables (hígado, túbulos renales, fibroblastos) siempre que el estroma/membrana basal esté intacto. 2) Cicatrización: sustitución por tejido fibroso de colágeno, ocurre cuando el tejido no tiene capacidad de división (células permanentes: neuronas, miocardio) o el estroma está severamente destruido. Requiere tejido de granulación (fibroblastos y neovasos/angiogénesis activada por VEGF y TGF-beta). Cicatrización por Primera Intención: heridas limpias con bordes afrontados, mínima cicatriz. Segunda Intención: heridas extensas, úlceras o quemaduras; requiere contracción de la herida mediada por miofibroblastos y genera una cicatriz abundante. Factores que retardan: Locales (infección - principal, movimiento, cuerpos extraños, tejido necrótico) y Generales/Sistémicos (diabetes mellitus, malnutrición/déficit de vitamina C, corticoesteroides).",
+                        focusPoints: [
+                            "Clasificación celular según capacidad de regeneración: Lábiles (continuamente en ciclo), Estables (entran al ciclo ante estímulos) y Permanentes (sin regeneración posnatal, reparan solo por cicatrización/fibrosis).",
+                            "Composición histológica del tejido de granulación: proliferación de vasos sanguíneos neoformados (angiogénesis) y fibroblastos en una matriz edematosa provisional.",
+                            "Diferencias entre cicatrización por primera y segunda intención, y complicaciones de la reparación (dehiscencia de suturas, queloides, cicatriz hipertrófica, contracturas)."
+                        ],
+                        flashcards: [
+                            { q: "¿Qué tipo de reparación celular ocurre en un infarto de miocardio?", a: "Cicatrización (fibrosis), ya que las células miocárdicas son permanentes y no pueden dividirse para regenerar el tejido muscular." },
+                            { q: "¿Por qué el déficit de vitamina C o de proteínas retarda la cicatrización?", a: "Porque inhiben la síntesis de colágeno por parte de los fibroblastos, retrasando la maduración de la cicatriz." },
+                            { q: "¿Cuál es la diferencia entre queloide y cicatriz hipertrófica?", a: "El queloide se produce por una formación excesiva y persistente de colágeno que sobresale más allá de los límites de la herida original, mientras que la hipertrófica se mantiene dentro de los límites de la lesión." }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 3,
+                title: "Bloque 3: Genética Clínica I - Herencia y Mutaciones",
+                priority: "Alta Priority",
+                hours: "12 Horas",
+                description: "Fundamentos de genética molecular y patrones de herencia mendeliana monogénica, así como fenómenos biológicos no clásicos de transmisión.",
+                themes: [
+                    {
+                        id: "t5_mendel",
+                        title: "Tema 5: Enfermedades Monogénicas y Herencia Mendeliana",
+                        synthesis: "Las enfermedades monogénicas obedecen a mutaciones en un solo gen y siguen los patrones de herencia mendeliana clasificados según la localización del gen (autonómico o sexual) y la dosis génica (dominante o recesiva). 1) Autosómica Dominante: se expresa en heterocigosis (Pp), hombres y mujeres afectados por igual, patrón vertical (afectados en todas las generaciones), riesgo de recurrencia del 50% (ej. polidactilia, acondroplasia). 2) Autosómica Recesiva: requiere doble dosis (aa), padres portadores sanos (Aa), patrón horizontal (hermanos afectados, padres sanos), riesgo de recurrencia del 25%, aumenta con consanguinidad (ej. albinismo oculocutáneo, fibrosis quística). 3) Ligada al X Recesiva: afecta principalmente a hombres hemicigotos (XhY), mujeres portadoras heterocigotas sanas (XHXh), un hombre enfermo tiene 100% hijas portadoras y 100% hijos sanos; mujer portadora transmite a 50% de hijos varones la enfermedad (ej. hemofilia A, distrofia muscular de Duchenne). 4) Ligada al X Dominante: mujeres afectadas con predominio, un hombre afectado transmite al 100% de sus hijas la enfermedad y 0% de sus hijos varones (ej. raquitismo hipofosfatémico).",
+                        focusPoints: [
+                            "Criterios de identificación de cada patrón de herencia mendeliana en un árbol genealógico o pedigrí clínico.",
+                            "Definición y cálculo de riesgos de recurrencia en parejas portadoras (ej. 25% para autosómica recesiva, 50% para autosómica dominante).",
+                            "La hemofilia A es causada por déficit en el factor VIII de coagulación; la sicklemia se debe a sustitución de ácido glutámico por valina en la posición 6 de la cadena beta de hemoglobina."
+                        ],
+                        flashcards: [
+                            { q: "¿Por qué las enfermedades recesivas ligadas al X se expresan casi exclusivamente en hombres?", a: "Porque los hombres tienen un solo cromosoma X (hemicigotos); si heredan el alelo mutado, no tienen otro alelo normal para compensar su función." },
+                            { q: "¿Qué es un portador sano en herencia autosómica recesiva?", a: "Un individuo heterocigoto (Aa) que porta el alelo mutado recesivo (a) pero no expresa la enfermedad porque posee un alelo dominante normal (A)." },
+                            { q: "¿Cuál es el riesgo de recurrencia para una pareja donde uno de los padres está afectado por polidactilia (heterocigoto Pp) y el otro es normal (pp)?", a: "El riesgo de recurrencia es del 50% para cada embarazo." }
+                        ]
+                    },
+                    {
+                        id: "t5_interf",
+                        title: "Tema 5: Interferencias Biológicas en la Herencia",
+                        synthesis: "Existen fenómenos biológicos que complican e interfieren con el análisis de los patrones clásicos mendelianos: 1) Penetrancia reducida: un genotipo patológico no se expresa fenotípicamente en el 100% de los portadores (ej. padres sanos que transmiten polidactilia). 2) Expresividad variable: variación en la intensidad o forma de la expresión clínica de un gen entre diferentes personas (ej. polidactilia en una mano vs en las cuatro extremidades). 3) Inactivación del cromosoma X (hipótesis de Lyon): ocurre en el estado de mórula en mujeres, inactivando al azar uno de los cromosomas X, produciendo compensación de dosis. 4) Herencia Mitocondrial: transmisión exclusiva materna por el óvulo; las madres transmiten a todos sus hijos, los padres afectados nunca la transmiten (ej. neuropatía óptica de Leber). 5) Mutaciones Dinámicas: expansión inestable de tripletes de nucleótidos que se agravan y aparecen más temprano en las siguientes generaciones (anticipación), ej. Síndrome del X Frágil (expansión CGG > 200 repeticiones, fenotipo con macroorquidismo). 6) Impronta Genómica: inactivación selectiva materna o paterna de un alelo; ej. deleción del brazo largo del cromosoma 15 da Síndrome de Angelman si se hereda de la madre, o Prader-Willi si se hereda del padre. 7) Disomía Uniparental: heredar ambos cromosomas de un par de un solo progenitor.",
+                        focusPoints: [
+                            "Diferenciar herencia mitocondrial (transmisión materna estricta a toda la descendencia, hombres no transmiten) de herencia ligada al X.",
+                            "El fenómeno de anticipación en mutaciones dinámicas (ej. Síndrome del X Frágil) y el genotipo del síndrome (CGG > 200 repetidos).",
+                            "Los síndromes de Angelman (marcha atáxica, ánimo alegre, epilepsia) y Prader-Willi (estatura baja, obesidad, hipogonadismo) como prototipos de impronta genómica en el cromosoma 15."
+                        ],
+                        flashcards: [
+                            { q: "¿Por qué un padre afectado por una mutación mitocondrial nunca transmite la enfermedad a sus hijos?", a: "Porque el espermatozoide solo aporta el pronúcleo masculino en la fecundación y no aporta mitocondrias; todas las mitocondrias del cigoto provienen del citoplasma del óvulo materno." },
+                            { q: "¿Qué es la penetrancia reducida de un gen?", a: "Es el porcentaje de individuos con un genotipo patológico que expresan clínicamente la enfermedad. Si es menor al 100%, se dice que la penetrancia es reducida o incompleta." },
+                            { q: "¿Qué caracteriza clínicamente al Síndrome de Martin Bell o X Frágil?", a: "Retraso mental, orejas grandes, mandíbula prominente y macroorquidismo (aumento del tamaño de los testículos) en varones pospuberales." }
+                        ]
+                    }
+                ]
+            },
+            {
+                id: 4,
+                title: "Bloque 4: Genética Clínica II - Aberraciones y Poblaciones",
+                priority: "Alta Priority",
+                hours: "12 Horas",
+                description: "Estudio de las aberraciones cromosómicas estructurales y numéricas, diagnóstico prenatal y los principios de la genética de poblaciones.",
+                themes: [
+                    {
+                        id: "t5_aberr",
+                        title: "Tema 5: Aberraciones Cromosómicas y Citogenética",
+                        synthesis: "Las aberraciones cromosómicas son alteraciones en el número o estructura de los cromosomas, diagnosticadas por elección mediante el estudio del Cariotipo. 1) Numéricas: Aneuploidías (no disyunción o retraso en anafase de la meiosis o mitosis). Trisomías autosómicas comunes: Síndrome de Down (trisomía 21, 47,XX/XY +21, retraso mental, fisuras palpebrales inclinadas, pliegue palmar único), Edwards (trisomía 18, malformaciones graves), Patau (trisomía 13). Aneuploidías sexuales: Síndrome de Turner (monosomía sexual 45,XO; corpúsculos de Barr = 0, talla baja, cuello alado, infantilismo sexual), Síndrome de Klinefelter (trisomía sexual 47,XXY; corpúsculos de Barr = 1, hombres de talla alta, testículos pequeños, ginecomastia, infertilidad). Poliploidías: múltiplos exactos del número haploide (3n triploidía, 4n tetraploidía), inviables en humanos. 2) Estructurales: rupturas cromosómicas con reordenamiento. Balanceadas (sin pérdida ni ganancia de material, ej. inversiones, translocaciones recíprocas) vs No Balanceadas (con ganancia/pérdida de material, ej. deleciones como Cri-Du-Chat 5p- con llanto de gato, duplicaciones, isocromosomas).",
+                        focusPoints: [
+                            "Mecanismo de producción de las aneuploidías: no disyunción o falta de separación de cromosomas homólogos durante la anafase de la meiosis I o II.",
+                            "Fórmulas cromosómicas de los síndromes estudiados: Down (47,XX/XY,+21), Turner (45,X), Klinefelter (47,XXY), Edwards (47,XX/XY,+18).",
+                            "El corpúsculo de Barr representa un cromosoma X condensado/inactivo en la interfase de células femeninas; su número es igual al número total de cromosomas X menos 1 (Fórmula: X-1)."
+                        ],
+                        flashcards: [
+                            { q: "¿Cómo se calcula el número de corpúsculos de Barr en un paciente con Síndrome de Klinefelter (47,XXY)?", a: "Se calcula con la fórmula X-1. Al tener dos cromosomas X, presenta 2 - 1 = 1 corpúsculo de Barr en el raspado de mucosa oral." },
+                            { q: "¿Cuál es la causa cromosómica del Síndrome de Cri-Du-Chat?", a: "Una deleción terminal o intersticial en el brazo corto del cromosoma 5 (5p-), caracterizado por microcefalia, hipotonía y llanto de tono agudo similar al maullido de un gato." },
+                            { q: "¿Qué es un isocromosoma?", a: "Un cromosoma anormal formado por la división transversal del centrómero en lugar de longitudinal, lo que resulta en un cromosoma que consta solo de dos brazos cortos o dos brazos largos." }
+                        ]
+                    },
+                    {
+                        id: "t5_pobl",
+                        title: "Tema 5: Marcadores Genéticos y Genética de Poblaciones",
+                        synthesis: "Los marcadores genéticos son loci con alelos fácilmente identificables, con herencia simple, alta frecuencia y estables ante el ambiente. Ejemplos: 1) Sistema ABO: alelos múltiples (A, B dominantes sobre O; A y B codominantes entre sí). Conflicto ABO neonatal ocurre por incompatibilidad materno-fetal (madre O, feto A o B), pudiendo provocar kerníctero fatal por aumento de bilirrubina. 2) Sistema Rh: antígeno D (Rh positivo dominante, DD o Dd) y d (Rh negativo recesivo, dd). 3) Sistema HLA (MHC): alta heterogeneidad alélica en cromosoma 6, crítico para el rechazo de trasplantes. 4) Marcadores moleculares (RFLPs). Genética de Poblaciones: estudia la distribución y frecuencias de genes y genotipos en poblaciones. Ley de Hardy-Weinberg enuncia que en una población en equilibrio (muy grande, matrimonios al azar, sin mutación ni selección/migración), las frecuencias génicas y genotípicas se mantienen constantes. Ecuaciones: p + q = 1 (frecuencias de alelos dominante p y recesivo q) y p^2 + 2pq + q^2 = 1 (frecuencias genotípicas de homocigoto dominante p^2, heterocigoto 2pq y homocigoto recesivo q^2).",
+                        focusPoints: [
+                            "Características fundamentales de un marcador genético: patrón de herencia simple, fácil identificación, polimorfismo y nula alteración ambiental.",
+                            "Análisis genético del cruzamiento ABO y Rh para determinar la descendencia de una pareja (ej. padres heterocigotos AO y BO pueden tener un hijo OO grupo O).",
+                            "Las ecuaciones de Hardy-Weinberg (p + q = 1 y p^2 + 2pq + q^2 = 1) y las cuatro condiciones estrictas para el equilibrio de la ley."
+                        ],
+                        flashcards: [
+                            { q: "¿Cuáles son las 4 condiciones para que se cumpla la Ley de Hardy-Weinberg?", a: "1) Poblaciones muy grandes, 2) Matrimonios al azar (panmixia), 3) Tasa de mutación constante y 4) Que no existan factores de selección natural ni migración." },
+                            { q: "¿Qué genotipos corresponden a los grupos sanguíneos A y B?", a: "Grupo A puede ser homocigoto dominante (AA) o heterocigoto (AO). Grupo B puede ser homocigoto dominante (BB) o heterocigoto (BO)." },
+                            { q: "What represents '2pq' in the Hardy-Weinberg equation?", a: "It represents the genotypic frequency of heterozygous individuals (Aa) in the population in equilibrium." }
+                        ]
+                    }
+                ]
+            }
+        ];
+
+        // Preset exam simulator questions
+        const simulatorQuestions = [
+            {
+                id: 1,
+                type: "CASO_CLINICO",
+                questionText: "Paciente masculino de 48 años que es ingresado por presentar un cuadro clínico de diarreas graves. Mediante exámenes complementarios se diagnostica hipopotasemia. Explique:\n1) ¿Qué tipo de respuesta celular adaptativa o lesión reversible se produce en los túbulos contorneados renales debido a la hipopotasemia?\n2) ¿Cuál es el mecanismo de producción de este cuadro morfológico?",
+                options: null,
+                correctAnswer: "1) Se produce tumefacción celular (o cambio hidrópico / vacuolización hidrópica).\n2) Se debe a la pérdida de función de las bombas iónicas (bomba Na-K dependiente de ATP) en la membrana plasmática, lo que causa entrada pasiva de sodio y agua a la célula.",
+                justification: "La tumefacción celular es un cuadro morfológico de lesión celular reversible. Al faltar oxígeno o nutrientes (hipoxia/isquemia/trastornos de electrolitos), se agota el ATP y falla la bomba Na-K. El sodio entra a la célula arrastrando agua, viéndose microscópicamente como vacuolas claras de agua en el citoplasma."
+            },
+            {
+                id: 2,
+                type: "SELECCION",
+                questionText: "En el curso de una pancreatitis hemorrágica aguda, el tejido adiposo pancreático y peripancreático sufre destrucción celular. Marque la respuesta correcta sobre el tipo de necrosis que se produce:",
+                options: [
+                    "Necrosis por coagulación por desnaturalización de proteínas.",
+                    "Necrosis licuefactiva por autólisis rápida.",
+                    "Necrosis enzimática de las grasas debido a la liberación de lipasas pancreáticas.",
+                    "Necrosis caseosa típica de micobacterias."
+                ],
+                correctAnswer: "2", // index of options
+                justification: "En la pancreatitis aguda, las lipasas pancreáticas activadas se liberan al tejido adiposo circundante y saponifican las grasas neutras de los adipocitos, formando jabones de calcio insolubles que macroscópicamente se observan como áreas blanco tizas calcáreas."
+            },
+            {
+                id: 3,
+                type: "CASO_CLINICO",
+                questionText: "Un paciente masculino de 28 años presenta aumento de volumen en la región cervical (adenopatía). El examen anatomopatológico revela un patrón de respuesta inflamatorio granulomatoso ganglionar, con necrosis caseosa central.\n1) ¿Qué diagnóstico clínico-comunitario de alta sospecha sugiere esta morfología?\n2) ¿Cuál es la célula característica y predominante de este patrón inflamatorio?",
+                options: null,
+                correctAnswer: "1) Sugiere sospecha de tuberculosis ganglionar (linfadenitis tuberculosa).\n2) La célula epitelioide (o macrófago modificado/activado), acompañada de linfocitos y células gigantes multinucleadas (tipo Langhans).",
+                justification: "La presencia de necrosis caseosa central rodeada de una pared inflamatoria granulomatosa es el hallazgo clásico y patognomónico de la tuberculosis. La célula clave del granuloma es el macrófago activado, también llamado célula epitelioide por su parecido histológico al epitelio."
+            },
+            {
+                id: 4,
+                type: "SELECCION",
+                questionText: "Una paciente de 66 años con diabetes mellitus y varices presenta una úlcera en la pierna derecha con abundante tejido de granulación exuberante. Respecto al proceso de cicatrización en esta paciente, marque la opción correcta:",
+                options: [
+                    "La úlcera cicatrizará por primera intención debido al buen estado circulatorio.",
+                    "Los esteroides acelerarían el proceso de cicatrización al aumentar la síntesis de colágeno.",
+                    "La diabetes mellitus y el mal estado circulatorio son factores sistémicos que retardan la cicatrización.",
+                    "El tejido de granulación exuberante favorece una cicatrización limpia y rápida."
+                ],
+                correctAnswer: "2", // index of option
+                justification: "Tanto la diabetes mellitus (factor metabólico general) como la insuficiencia vascular/varices (factor local de mal estado circulatorio) retardan drásticamente la migración de fibroblastos y la síntesis de colágeno, enlenteciendo la curación de heridas."
+            },
+            {
+                id: 5,
+                type: "DESARROLLO",
+                questionText: "Describa la fórmula cromosómica y el número de corpúsculos de Barr en células en interfase correspondientes a:\n1) Síndrome de Turner.\n2) Síndrome de Klinefelter.",
+                options: null,
+                correctAnswer: "1) Síndrome de Turner: Fórmula 45,XO (ó 45,X). Corpúsculos de Barr: 0 (cero).\n2) Síndrome de Klinefelter: Fórmula 47,XXY. Corpúsculos de Barr: 1 (uno).",
+                justification: "El número de corpúsculos de Barr (cromatina sexual condensada) en interfase es siempre igual al número de cromosomas X menos 1 (Fórmula: X-1). El Síndrome de Turner tiene un solo X (1-1=0). El Síndrome de Klinefelter tiene dos X (2-1=1)."
+            },
+            {
+                id: 6,
+                type: "DESARROLLO",
+                questionText: "En una comunidad atendida por el Consultorio de Barrio Adentro, se estudia una población de 1000 personas para la frecuencia del antígeno Rh. Si se determina que el 70% de las personas son Rh positivas (fenotipo dominante), y la población está en equilibrio de Hardy-Weinberg (p + q = 1, p^2 + 2pq + q^2 = 1):\n1) ¿Cuál es la frecuencia genotípica de los homocigóticos recesivos (dd)?\n2) ¿Cuál es la frecuencia del alelo recesivo d (q)?",
+                options: null,
+                correctAnswer: "1) Frecuencia genotípica dd (q^2) = 0.30 (30%).\n2) Frecuencia del alelo d (q) = raíz cuadrada de 0.30 ≈ 0.548 (54.8%).",
+                justification: "Si el 70% presenta el fenotipo dominante (Rh positivo), el 30% restante corresponde obligatoriamente al fenotipo recesivo (Rh negativo, genotipo dd). Según la Ley de Hardy-Weinberg, la frecuencia de dd es q^2, por lo que q^2 = 0.30, y q es la raíz cuadrada de 0.30, es decir, aproximadamente 0.55."
+            }
+        ];
+
+        // App States
+        let studyProgress = {};
+        let personalNotes = {};
+        let examHistory = [];
+        let currentBlockIndex = 0;
+        let currentThemeId = "t1";
+        let currentQuestionIdx = 0;
+        let currentStudentAnswers = {};
+        let currentQuestionEvaluations = {};
+
+        // System Prompt Instruction for UCS Clinical Tutor
+        const SYSTEM_INSTRUCTION_UCS = `
+Eres un Tutor Clínico de la Universidad de las Ciencias de la Salud (UCS) de Venezuela, especialista en Morfofisiopatología Humana I.
+Tu tarea es guiar al estudiante de medicina en su plan de choque de estudio intensivo de 48 horas.
+Debes exigir rigurosidad académica, razonamiento clínico basado en la Atención Primaria de Salud (APS) y la medicina integral comunitaria de Venezuela.
+Evita explicaciones redundantes o textos de relleno. Ve directo al grano fisiopatológico, morfológico o clínico.
+Toda retroalimentación debe basarse estrictamente en la literatura oficial de la asignatura Morfofisiopatología Humana I del PNF-MIC (Medicina Integral Comunitaria).
+`;
+
+        // Local Initialization
+        window.addEventListener('DOMContentLoaded', () => {
+            loadLocalStorageData();
+            renderBlocksRoadmap();
+            renderStudyBlockAndThemeSelectors();
+            selectStudyTheme(currentThemeId);
+            renderQuizNavigator();
+            displayQuizQuestion();
+            renderHistoryAttempts();
+            updateProgressCounters();
+        });
+
+        function loadLocalStorageData() {
+            // Load completion progress
+            studyProgress = JSON.parse(localStorage.getItem('studyProgress')) || {};
+            
+            // Sync with actual blocks to ensure all 10 themes are present and prevent crashes
+            let updated = false;
+            blocks.flatMap(b => b.themes).forEach(t => {
+                if (!studyProgress[t.id]) {
+                    studyProgress[t.id] = { isCompleted: false, plannedDay: 1 };
+                    updated = true;
+                }
+            });
+            if (updated || Object.keys(studyProgress).length === 0) {
+                localStorage.setItem('studyProgress', JSON.stringify(studyProgress));
+            }
+
+            // Load notes
+            personalNotes = JSON.parse(localStorage.getItem('personalNotes')) || {};
+            // Load history
+            examHistory = JSON.parse(localStorage.getItem('examHistory')) || [];
+
+            // Load saved API key if exists
+            const savedKey = localStorage.getItem('gemini_api_key');
+            if (savedKey) {
+                document.getElementById('api-key-input').value = savedKey;
+            }
+        }
+
+        function getApiKey() {
+            const inputKey = document.getElementById('api-key-input').value.trim();
+            if (inputKey) {
+                localStorage.setItem('gemini_api_key', inputKey);
+                return inputKey;
+            }
+            return ""; // Uses fallback or errors gracefully
+        }
+
+        function updateProgressCounters() {
+            const totalThemes = blocks.flatMap(b => b.themes).length;
+            const completedCount = Object.values(studyProgress).filter(p => p.isCompleted).length;
+            const percent = (completedCount / totalThemes) * 100;
+
+            document.getElementById('progress-text').innerText = `${completedCount} / ${totalThemes}`;
+            document.getElementById('progress-bar').style.width = `${percent}%`;
+        }
+
+        // Tab Switching
+        function switchTab(tabId) {
+            document.getElementById('tab-content-plan').classList.add('hidden');
+            document.getElementById('tab-content-study').classList.add('hidden');
+            document.getElementById('tab-content-simulator').classList.add('hidden');
+
+            document.getElementById('tab-btn-plan').className = "flex-1 py-3 px-2 text-center border-b-2 border-transparent text-slate-400 font-bold text-sm flex items-center justify-center gap-2 transition hover:bg-clinical-bg/50";
+            document.getElementById('tab-btn-study').className = "flex-1 py-3 px-2 text-center border-b-2 border-transparent text-slate-400 font-bold text-sm flex items-center justify-center gap-2 transition hover:bg-clinical-bg/50";
+            document.getElementById('tab-btn-simulator').className = "flex-1 py-3 px-2 text-center border-b-2 border-transparent text-slate-400 font-bold text-sm flex items-center justify-center gap-2 transition hover:bg-clinical-bg/50";
+
+            document.getElementById(`tab-content-${tabId}`).classList.remove('hidden');
+            document.getElementById(`tab-btn-${tabId}`).className = "flex-1 py-3 px-2 text-center border-b-2 border-clinical-primaryLight text-clinical-primaryLight font-bold text-sm flex items-center justify-center gap-2 transition hover:bg-clinical-bg/50";
+            
+            // Re-render blocks just in case
+            if (tabId === 'plan') {
+                renderBlocksRoadmap();
+            }
+        }
+
+        // Direct study theme navigation from roadmap
+        function startStudyingTheme(themeId) {
+            switchTab('study');
+            selectStudyTheme(themeId);
+        }
+
+        // --- PESTAÑA 1: PLAN DE CHOQUE 48H ---
+        function renderBlocksRoadmap() {
+            const container = document.getElementById('blocks-container');
+            container.innerHTML = '';
+
+            blocks.forEach(block => {
+                const isBlock1or2 = block.id === 1 || block.id === 2;
+                const badgeColor = isBlock1or2 ? 'bg-red-500/20 text-red-400 border-red-500/30' : 'bg-amber-500/20 text-amber-400 border-amber-500/30';
+
+                let themesHtml = '';
+                block.themes.forEach(theme => {
+                    const progressInfo = studyProgress[theme.id] || { isCompleted: false, plannedDay: 1 };
+                    const isCompleted = progressInfo.isCompleted;
+                    const plannedDay = progressInfo.plannedDay;
+
+                    themesHtml += `
+                        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3 rounded-lg bg-clinical-bg/40 border border-clinical-border/40 hover:border-clinical-primary/40 transition">
+                            <div class="flex items-center gap-3 cursor-pointer flex-grow" onclick="toggleThemeCompletion('${theme.id}')">
+                                <i class="fa-solid ${isCompleted ? 'fa-circle-check text-clinical-primaryLight' : 'fa-circle text-slate-600'} text-lg"></i>
+                                <div class="text-left">
+                                    <h5 class="text-xs font-semibold ${isCompleted ? 'text-clinical-primaryLight line-through' : 'text-slate-200'}">${theme.title}</h5>
+                                    <span class="text-[10px] text-slate-500">Asignado: Día ${plannedDay}</span>
+                                </div>
+                            </div>
+                            <div class="flex items-center justify-between sm:justify-end gap-2 w-full sm:w-auto pt-2 sm:pt-0 border-t border-clinical-border/20 sm:border-t-0">
+                                <!-- Day Selector Chip -->
+                                <div class="flex items-center gap-1">
+                                    <button onclick="setPlannedDay('${theme.id}', 1)" class="px-2 py-0.5 rounded text-[9px] font-bold transition ${plannedDay === 1 ? 'bg-clinical-primary text-white' : 'bg-clinical-surface text-slate-400 border border-clinical-border'}">Día 1</button>
+                                    <button onclick="setPlannedDay('${theme.id}', 2)" class="px-2 py-0.5 rounded text-[9px] font-bold transition ${plannedDay === 2 ? 'bg-clinical-primary text-white' : 'bg-clinical-surface text-slate-400 border border-clinical-border'}">Día 2</button>
+                                </div>
+                                <!-- Start Study Button -->
+                                <button onclick="event.stopPropagation(); startStudyingTheme('${theme.id}')" class="px-2.5 py-1 rounded text-[10px] font-bold bg-clinical-primary/20 text-clinical-primaryLight border border-clinical-primary/30 hover:bg-clinical-primary/40 transition flex items-center gap-1">
+                                    <i class="fa-solid fa-book-open"></i> Estudiar
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                container.innerHTML += `
+                    <div class="bg-clinical-surface rounded-2xl border border-clinical-border p-5 space-y-4 shadow-md flex flex-col justify-between">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between gap-2 flex-wrap">
+                                <h4 class="text-sm font-black text-white flex-grow">${block.title}</h4>
+                                <span class="text-[9px] font-black border uppercase px-2 py-0.5 rounded-full ${badgeColor}">${block.priority}</span>
+                            </div>
+                            <p class="text-xs text-slate-400">${block.description}</p>
+                            <hr class="border-clinical-border">
+                            <div class="space-y-2">
+                                ${themesHtml}
+                            </div>
+                        </div>
+                        <div class="pt-4 text-left">
+                            <span class="text-[10px] text-slate-500"><i class="fa-regular fa-clock"></i> Carga recomendada: <b>${block.hours}</b></span>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function toggleThemeCompletion(themeId) {
+            studyProgress[themeId].isCompleted = !studyProgress[themeId].isCompleted;
+            localStorage.setItem('studyProgress', JSON.stringify(studyProgress));
+            renderBlocksRoadmap();
+            updateProgressCounters();
+        }
+
+        function setPlannedDay(themeId, day) {
+            studyProgress[themeId].plannedDay = day;
+            localStorage.setItem('studyProgress', JSON.stringify(studyProgress));
+            renderBlocksRoadmap();
+        }
+
+        // AI Schedule Call
+        async function generateSchedule() {
+            const weakAreas = document.getElementById('weak-areas-input').value.trim();
+            if (!weakAreas) return;
+
+            const btn = document.getElementById('diagnostic-btn');
+            const output = document.getElementById('diagnostic-output');
+            const text = document.getElementById('diagnostic-text');
+
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Procesando con IA...`;
+            output.classList.remove('hidden');
+            text.innerHTML = "El Tutor Clínico UCS está diagnosticando tu caso de estudio intensivo de 48 horas...\nPor favor, espera unos instantes.";
+
+            const apiKey = getApiKey();
+            const prompt = `
+Genera un plan de estudio intensivo de 48h ultra optimizado para Morfofisiopatología Humana I de la UCS.
+El estudiante tiene debilidades en: "${weakAreas}".
+Estructura la respuesta de la siguiente forma:
+1. DIAGNÓSTICO CLÍNICO: Qué áreas prioritarias debe repasar y por qué.
+2. CRONOGRAMA DÍA 1 (Primeras 24 Horas): Horario y bloques específicos de contenido general/lesiones.
+3. CRONOGRAMA DÍA 2 (Siguientes 24 Horas): Horario y bloques específicos de inflamación/genética.
+4. ABORDAJE COMUNITARIO (APS): Cómo aplicar estos conocimientos en la consulta del Consultorio Popular de Barrio Adentro.
+Evita texto de relleno, ve directo al grano médico y académico.
+`;
+
+            try {
+                if (!apiKey) {
+                    // Fallback Offline Generator
+                    setTimeout(() => {
+                        text.innerHTML = `
+[EVALUACIÓN OFFLINE - CONFIGURA TU GEMINI_API_KEY PARA RESPUESTAS PERSONALIZADAS]
+
+Tutor Clínico UCS - Plan de Choque de 48 Horas:
+• Áreas de Debilidad Identificadas: ${weakAreas}
+
+DÍA 1 - Primeras 24 Horas (Foco: Patología General y Lesión Celular)
+- 08:00 - 12:00: Bloque 1 - Métodos de Estudio (Biopsias incisionales y excisionales).
+- 13:00 - 18:00: Lesión Celular Reversible (Tumefacción hidrópica, esteatosis).
+- 19:00 - 22:00: Necrosis y Apoptosis (Diferencias celulares claves para el examen de la UCS).
+
+DÍA 2 - Siguientes 24 Horas (Foco: Respuesta Tisular e Introducción a la Genética)
+- 08:00 - 12:00: Bloque 2 - Inflamación Aguda y Crónica (Acontecimientos vasculares y de fase aguda).
+- 13:00 - 18:00: Reparación Tisular (Tejido de granulación vs fibrosis en miocardio).
+- 19:00 - 22:00: Bloques 3 y 4 - Herencia Mendeliana, Aberraciones cromosómicas y Hardy-Weinberg.
+
+Abordaje Comunitario (APS): Recuerda que el diagnóstico oportuno de infarto de miocardio, pancreatitis agudas o tuberculosis pulmonar (morfologías caseosas) comienza con una adecuada historia clínica y anamnesis comunitaria en las pesquisas activas de Barrio Adentro.
+`;
+                        btn.disabled = false;
+                        btn.innerHTML = `<i class="fa-solid fa-stethoscope"></i> Diagnosticar con IA`;
+                    }, 1500);
+                } else {
+                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${apiKey}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            contents: [{ parts: [{ text: prompt }] }],
+                            systemInstruction: { parts: [{ text: SYSTEM_INSTRUCTION_UCS }] },
+                            generationConfig: { temperature: 0.3 }
+                        })
+                    });
+                    const data = await response.json();
+                    const resultText = data.candidates[0].content.parts[0].text;
+                    text.innerText = resultText;
+                    btn.disabled = false;
+                    btn.innerHTML = `<i class="fa-solid fa-stethoscope"></i> Diagnosticar con IA`;
+                }
+            } catch (err) {
+                text.innerText = "Error al conectar con la API de Gemini: " + err.message + "\nPor favor, verifica tu conexión o tu API Key.";
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-stethoscope"></i> Diagnosticar con IA`;
+            }
+        }
+
+        function clearDiagnostic() {
+            document.getElementById('diagnostic-output').classList.add('hidden');
+        }
+
+        // --- PESTAÑA 2: MÓDULO DE ESTUDIO ---
+        function renderStudyBlockAndThemeSelectors() {
+            const blocksList = document.getElementById('study-blocks-list');
+            blocksList.innerHTML = '';
+            
+            blocks.forEach(block => {
+                const isSelected = selectedBlockId(currentThemeId) === block.id;
+                blocksList.innerHTML += `
+                    <button onclick="selectStudyBlock(${block.id})" class="text-left w-full p-2.5 rounded-xl text-xs font-bold transition ${isSelected ? 'bg-clinical-primary text-white' : 'bg-clinical-surfaceVar text-slate-300 hover:bg-clinical-surfaceVar/80'}">
+                        B${block.id}: ${block.title.substring(10)}
+                    </button>
+                `;
+            });
+        }
+
+        function selectedBlockId(themeId) {
+            return blocks.find(b => b.themes.some(t => t.id === themeId))?.id || 1;
+        }
+
+        function selectStudyBlock(blockId) {
+            const block = blocks.find(b => b.id === blockId);
+            const firstTheme = block.themes[0];
+            selectStudyTheme(firstTheme.id);
+        }
+
+        function renderThemeListForBlock(blockId) {
+            const themesList = document.getElementById('study-themes-list');
+            themesList.innerHTML = '';
+            const block = blocks.find(b => b.id === blockId);
+
+            block.themes.forEach(theme => {
+                const isSelected = theme.id === currentThemeId;
+                themesList.innerHTML += `
+                    <button onclick="selectStudyTheme('${theme.id}')" class="text-left w-full p-3 rounded-xl text-xs flex items-center gap-2 transition ${isSelected ? 'bg-clinical-primary/15 border border-clinical-primary text-clinical-primaryLight font-bold' : 'bg-clinical-surfaceVar/40 hover:bg-clinical-surfaceVar/60 text-slate-300'}">
+                        <i class="fa-solid ${isSelected ? 'fa-book-open text-clinical-primaryLight' : 'fa-book text-slate-500'}"></i>
+                        <span>${theme.title}</span>
+                    </button>
+                `;
+            });
+        }
+
+        function selectStudyTheme(themeId) {
+            currentThemeId = themeId;
+            const blockId = selectedBlockId(themeId);
+            renderStudyBlockAndThemeSelectors();
+            renderThemeListForBlock(blockId);
+
+            const theme = blocks.flatMap(b => b.themes).find(t => t.id === themeId);
+            if (!theme) return;
+
+            // Render Synthesis & Focus
+            document.getElementById('study-theme-title').innerText = theme.title;
+            document.getElementById('study-theme-synthesis').innerText = theme.synthesis;
+            
+            const focusUl = document.getElementById('study-theme-focus');
+            focusUl.innerHTML = '';
+            theme.focusPoints.forEach(pt => {
+                focusUl.innerHTML += `
+                    <li class="flex gap-2 mb-1">
+                        <span class="text-clinical-primary font-black">•</span>
+                        <span>${pt}</span>
+                    </li>
+                `;
+            });
+
+            // Completion Button State
+            const compBtn = document.getElementById('mark-complete-btn');
+            const isCompleted = studyProgress[themeId]?.isCompleted || false;
+            if (isCompleted) {
+                compBtn.className = "bg-clinical-primary text-white text-xs font-bold px-3 py-1.5 rounded-lg transition flex items-center gap-1";
+                compBtn.innerHTML = `<i class="fa-solid fa-circle-check"></i> Tema Completado`;
+            } else {
+                compBtn.className = "bg-clinical-primary/10 border border-clinical-primary/30 text-clinical-primaryLight text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-clinical-primary/20 transition flex items-center gap-1";
+                compBtn.innerHTML = `<i class="fa-solid fa-circle-notch"></i> Marcar como Completado`;
+            }
+            compBtn.onclick = () => toggleThemeCompletionDirect(themeId);
+
+            // Render Flashcards
+            const flashContainer = document.getElementById('study-flashcards-container');
+            flashContainer.innerHTML = '';
+            theme.flashcards.forEach((fc, idx) => {
+                flashContainer.innerHTML += `
+                    <div onclick="toggleFlashcard(${idx})" class="bg-clinical-surfaceVar border border-clinical-border/40 rounded-xl p-4 cursor-pointer hover:border-clinical-primary/50 transition">
+                        <div class="flex items-center justify-between text-[10px] text-slate-500 mb-1">
+                            <span class="font-bold text-clinical-primary">Tarjeta #${idx+1}</span>
+                            <span>Haga clic para voltear</span>
+                        </div>
+                        <p class="text-xs font-bold text-white mb-2">${fc.q}</p>
+                        <p id="flashcard-a-${idx}" class="text-xs text-clinical-primaryLight font-semibold border-t border-clinical-border/40 pt-2 hidden">${fc.a}</p>
+                    </div>
+                `;
+            });
+
+            // Load saved note
+            document.getElementById('theme-notes-input').value = personalNotes[themeId] || "";
+        }
+
+        function toggleThemeCompletionDirect(themeId) {
+            studyProgress[themeId].isCompleted = !studyProgress[themeId].isCompleted;
+            localStorage.setItem('studyProgress', JSON.stringify(studyProgress));
+            selectStudyTheme(themeId);
+            updateProgressCounters();
+        }
+
+        function toggleFlashcard(idx) {
+            const ans = document.getElementById(`flashcard-a-${idx}`);
+            ans.classList.toggle('hidden');
+        }
+
+        function saveThemeNotes() {
+            const text = document.getElementById('theme-notes-input').value.trim();
+            personalNotes[currentThemeId] = text;
+            localStorage.setItem('personalNotes', JSON.stringify(personalNotes));
+
+            const status = document.getElementById('notes-status');
+            status.classList.remove('opacity-0');
+            status.classList.add('opacity-100');
+            setTimeout(() => {
+                status.classList.remove('opacity-100');
+                status.classList.add('opacity-0');
+            }, 2000);
+        }
+
+        // --- PESTAÑA 3: SIMULADOR EXAMEN ---
+        function renderQuizNavigator() {
+            const grid = document.getElementById('sim-questions-grid');
+            grid.innerHTML = '';
+
+            simulatorQuestions.forEach((q, idx) => {
+                const isSelected = currentQuestionIdx === idx;
+                const isAnswered = currentStudentAnswers[q.id] ? true : false;
+                const evaluation = currentQuestionEvaluations[q.id];
+
+                let btnStyle = 'bg-clinical-surfaceVar text-slate-300';
+                if (isSelected) {
+                    btnStyle = 'bg-clinical-primary text-white font-bold ring-2 ring-clinical-primaryLight/50';
+                } else if (evaluation) {
+                    btnStyle = evaluation.isCorrect ? 'bg-clinical-correct/20 border border-clinical-correct text-clinical-correct' : 'bg-clinical-incorrect/20 border border-clinical-incorrect text-clinical-incorrect';
+                } else if (isAnswered) {
+                    btnStyle = 'bg-clinical-secondary/20 border border-clinical-secondary text-clinical-secondary';
+                }
+
+                grid.innerHTML += `
+                    <button onclick="selectQuestion(${idx})" class="py-2 px-1 text-center rounded-lg text-xs font-black transition ${btnStyle}">
+                        P${idx+1}
+                    </button>
+                `;
+            });
+        }
+
+        function selectQuestion(idx) {
+            currentQuestionIdx = idx;
+            renderQuizNavigator();
+            displayQuizQuestion();
+        }
+
+        function displayQuizQuestion() {
+            const q = simulatorQuestions[currentQuestionIdx];
+            if (!q) return;
+
+            document.getElementById('sim-question-type').innerText = q.type.replace('_', ' ');
+            document.getElementById('sim-question-index').innerText = `Pregunta ${currentQuestionIdx + 1} de ${simulatorQuestions.length}`;
+            document.getElementById('sim-question-text').innerText = q.questionText;
+
+            const optionsContainer = document.getElementById('sim-options-container');
+            const textContainer = document.getElementById('sim-text-container');
+            const textInput = document.getElementById('sim-text-input');
+
+            // Reset Output Grading
+            const gradingOutput = document.getElementById('grading-output');
+            gradingOutput.classList.add('hidden');
+
+            const savedAnswer = currentStudentAnswers[q.id] || "";
+
+            if (q.type === 'SELECCION') {
+                optionsContainer.classList.remove('hidden');
+                textContainer.classList.add('hidden');
+                optionsContainer.innerHTML = '';
+
+                q.options.forEach((opt, idx) => {
+                    const isChecked = savedAnswer === idx.toString();
+                    optionsContainer.innerHTML += `
+                        <label class="flex items-center gap-3 p-3 rounded-lg bg-clinical-bg/50 border border-clinical-border/40 cursor-pointer hover:border-clinical-primary/40 transition">
+                            <input type="radio" name="sim-option" value="${idx}" ${isChecked ? 'checked' : ''} onchange="saveQuizAnswer(${q.id}, '${idx}')" class="accent-clinical-primary">
+                            <span class="text-xs text-slate-200">${opt}</span>
+                        </label>
+                    `;
+                });
+            } else {
+                optionsContainer.classList.add('hidden');
+                textContainer.classList.remove('hidden');
+                textInput.value = savedAnswer;
+                textInput.oninput = (e) => saveQuizAnswer(q.id, e.target.value);
+            }
+
+            // Restore Grading Feedback if evaluated
+            const savedEvaluation = currentQuestionEvaluations[q.id];
+            if (savedEvaluation) {
+                showGradingResult(savedEvaluation.isCorrect, savedEvaluation.feedback);
+            }
+
+            // Prev/Next disable checks
+            document.getElementById('sim-prev-btn').disabled = currentQuestionIdx === 0;
+            document.getElementById('sim-next-btn').disabled = currentQuestionIdx === simulatorQuestions.length - 1;
+        }
+
+        function saveQuizAnswer(questionId, val) {
+            currentStudentAnswers[questionId] = val;
+            renderQuizNavigator();
+        }
+
+        function prevQuestion() {
+            if (currentQuestionIdx > 0) {
+                selectQuestion(currentQuestionIdx - 1);
+            }
+        }
+
+        function nextQuestion() {
+            if (currentQuestionIdx < simulatorQuestions.length - 1) {
+                selectQuestion(currentQuestionIdx + 1);
+            }
+        }
+
+        async function evaluateAnswer() {
+            const q = simulatorQuestions[currentQuestionIdx];
+            if (!q) return;
+
+            const studentAnswer = currentStudentAnswers[q.id] || "";
+            if (!studentAnswer) {
+                alert("Por favor, ingresa o selecciona una respuesta antes de evaluar.");
+                return;
+            }
+
+            const btn = document.getElementById('sim-eval-btn');
+            btn.disabled = true;
+            btn.innerHTML = `<i class="fa-solid fa-spinner animate-spin"></i> Evaluando...`;
+
+            const gradingOutput = document.getElementById('grading-output');
+            const gradingStatus = document.getElementById('grading-status');
+            const gradingIcon = document.getElementById('grading-icon');
+            const gradingFeedback = document.getElementById('grading-feedback');
+
+            gradingOutput.classList.remove('hidden');
+            gradingStatus.innerText = "Evaluando respuesta con el Tutor Clínico UCS...";
+            gradingFeedback.innerText = "Por favor, espera unos instantes mientras analizamos tu respuesta...";
+
+            const apiKey = getApiKey();
+
+            const isOptionSelect = q.type === "SELECCION";
+            const prompt = isOptionSelect ? `
+El estudiante ha respondido una pregunta de selección simple de Morfofisiopatología Humana I de la UCS.
+Pregunta: "${q.questionText}"
+Opciones: ${q.options.join()}
+Respuesta seleccionada por el estudiante: "${q.options[parseInt(studentAnswer)]}"
+Respuesta correcta esperada: "${q.options[parseInt(q.correctAnswer)]}"
+
+Evalúa si su selección es correcta.
+Proporciona la retroalimentación breve como el Tutor Clínico UCS, explicando:
+1. El fundamento fisiopatológico o morfológico del tema.
+2. Su aplicación en la labor preventiva o diagnóstica de la Atención Primaria de Salud (APS).
+Ve directo al grano, sin textos de relleno.
+` : `
+El estudiante ha respondido una pregunta de desarrollo en Morfofisiopatología Humana I de la UCS.
+Pregunta: "${q.questionText}"
+Respuesta del estudiante: "${studentAnswer}"
+Respuesta correcta esperada: "${q.correctAnswer}"
+Justificación académica: "${q.justification}"
+
+Evalúa si la respuesta es CORRECTA, PARCIALMENTE CORRECTA o INCORRECTA.
+Proporciona la retroalimentación como el Tutor Clínico UCS, explicando:
+1. Qué puntos clínicos clave acertó y cuáles faltaron.
+2. Fundamento fisiopatológico de la lesión, necrosis, genética o Hardy-Weinberg.
+3. Importancia clínica y comunitaria para Barrio Adentro.
+Ve directo al grano, sin textos de relleno.
+`;
+
+            try {
+                if (!apiKey) {
+                    // Fallback Offline evaluation (Guarantees zero-dependency client performance!)
+                    setTimeout(() => {
+                        const isCorrectLocal = evaluateLocalFallback(q, studentAnswer);
+                        const resultFeedback = `
+[EVALUACIÓN LOCAL - OFFLINE]
+Criterio del Tutor Clínico UCS:
+${q.justification}
+
+Aplicación en APS: Dominar este concepto es vital para diagnosticar oportunamente patologías de alto impacto epidemiológico o clínico directo desde el Consultorio Popular.
+`;
+                        currentQuestionEvaluations[q.id] = {
+                            isCorrect: isCorrectLocal,
+                            feedback: resultFeedback
+                        };
+                        showGradingResult(isCorrectLocal, resultFeedback);
+                        btn.disabled = false;
+                        btn.innerHTML = `<i class="fa-solid fa-microchip"></i> Evaluar Respuesta con IA`;
+                        renderQuizNavigator();
+                    }, 1200);
+                } else {
+                    const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash:generateContent?key=${apiKey}`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            contents: [{ parts: [{ text: prompt }] }],
+                            systemInstruction: { parts: [{ text: SYSTEM_INSTRUCTION_UCS }] },
+                            generationConfig: { temperature: 0.3 }
+                        })
+                    });
+                    const data = await response.json();
+                    const aiResponse = data.candidates[0].content.parts[0].text;
+                    const lowerResponse = aiResponse.toLowerCase();
+                    const isCorrect = lowerResponse.includes("correcta") || lowerResponse.includes("es correcta");
+
+                    currentQuestionEvaluations[q.id] = {
+                        isCorrect: isCorrect,
+                        feedback: aiResponse
+                    };
+
+                    showGradingResult(isCorrect, aiResponse);
+                    btn.disabled = false;
+                    btn.innerHTML = `<i class="fa-solid fa-microchip"></i> Evaluar Respuesta con IA`;
+                    renderQuizNavigator();
+                }
+            } catch (err) {
+                gradingFeedback.innerText = "Error al conectar con la API de Gemini: " + err.message;
+                btn.disabled = false;
+                btn.innerHTML = `<i class="fa-solid fa-microchip"></i> Evaluar Respuesta con IA`;
+            }
+        }
+
+        function evaluateLocalFallback(q, ans) {
+            if (q.type === 'SELECCION') {
+                return ans.trim() === q.correctAnswer.trim();
+            }
+            // Simple robust key phrase matchers
+            const lowerAns = ans.toLowerCase();
+            if (q.id === 1) {
+                return lowerAns.includes("tumefacción") || lowerAns.includes("bomba") || lowerAns.includes("hidrópica");
+            }
+            if (q.id === 3) {
+                return lowerAns.includes("tuberculosis") || lowerAns.includes("caseosa") || lowerAns.includes("epitelioide") || lowerAns.includes("langhans");
+            }
+            if (q.id === 5) {
+                return lowerAns.includes("45") || lowerAns.includes("turner") || lowerAns.includes("klinefelter") || lowerAns.includes("47");
+            }
+            if (q.id === 6) {
+                return lowerAns.includes("0.3") || lowerAns.includes("30") || lowerAns.includes("0.55") || lowerAns.includes("55");
+            }
+            return true; // Default partial approval
+        }
+
+        function showGradingResult(isCorrect, text) {
+            const gradingOutput = document.getElementById('grading-output');
+            const gradingStatus = document.getElementById('grading-status');
+            const gradingIcon = document.getElementById('grading-icon');
+            const gradingFeedback = document.getElementById('grading-feedback');
+
+            gradingOutput.classList.remove('hidden');
+            gradingFeedback.innerText = text;
+
+            if (isCorrect) {
+                gradingOutput.className = "bg-green-500/5 rounded-xl border border-green-500/30 p-5 space-y-3";
+                gradingStatus.innerText = "Respuesta Correcta";
+                gradingStatus.className = "text-sm font-bold text-green-400";
+                gradingIcon.innerHTML = `<i class="fa-solid fa-circle-check text-green-400"></i>`;
+            } else {
+                gradingOutput.className = "bg-amber-500/5 rounded-xl border border-amber-500/30 p-5 space-y-3";
+                gradingStatus.innerText = "Evaluación / Retroalimentación Completa";
+                gradingStatus.className = "text-sm font-bold text-amber-400";
+                gradingIcon.innerHTML = `<i class="fa-solid fa-triangle-exclamation text-amber-400"></i>`;
+            }
+        }
+
+        function resetExam() {
+            currentStudentAnswers = {};
+            currentQuestionEvaluations = {};
+            currentQuestionIdx = 0;
+            renderQuizNavigator();
+            displayQuizQuestion();
+        }
+
+        function submitFullExam() {
+            const totalQuestions = simulatorQuestions.length;
+            const evaluationsCount = Object.keys(currentQuestionEvaluations).length;
+
+            if (evaluationsCount === 0) {
+                alert("Por favor, evalúa al menos una respuesta para poder guardar tu simulacro.");
+                return;
+            }
+
+            const correctCount = Object.values(currentQuestionEvaluations).filter(e => e.isCorrect).length;
+            // UCS grades are out of 20 points
+            const finalScore = Math.round((correctCount / evaluationsCount) * 20);
+
+            const timestamp = new Date().toLocaleString('es-VE');
+            const attemptInfo = {
+                timestamp: timestamp,
+                score: finalScore,
+                total: totalQuestions,
+                graded: evaluationsCount,
+                percent: Math.round((correctCount / evaluationsCount) * 100)
+            };
+
+            examHistory.unshift(attemptInfo);
+            localStorage.setItem('examHistory', JSON.stringify(examHistory));
+
+            renderHistoryAttempts();
+            alert(`¡Simulacro guardado con éxito!\nCalificación obtenida: ${finalScore} / 20 puntos.`);
+        }
+
+        function renderHistoryAttempts() {
+            const container = document.getElementById('sim-attempts-history');
+            container.innerHTML = '';
+
+            if (examHistory.length === 0) {
+                container.innerHTML = `<p class="text-slate-500 italic text-[11px]">No hay intentos registrados.</p>`;
+                return;
+            }
+
+            examHistory.forEach(att => {
+                const scoreColor = att.score >= 16 ? 'text-clinical-primaryLight' : (att.score >= 10 ? 'text-clinical-accent' : 'text-clinical-incorrect');
+                container.innerHTML += `
+                    <div class="bg-clinical-surfaceVar/50 p-2.5 rounded-lg border border-clinical-border/40 flex items-center justify-between">
+                        <div>
+                            <span class="font-bold block text-slate-300 text-[10px]">${att.timestamp}</span>
+                            <span class="text-[10px] text-slate-500">Evaluadas: ${att.graded} de ${att.total}</span>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-sm font-black ${scoreColor}">${att.score} / 20</span>
+                            <span class="text-[9px] text-slate-400 block">${att.percent}% de acierto</span>
+                        </div>
+                    </div>
+                `;
+            });
+        }
+
+        function clearHistory() {
+            if (confirm("¿Estás seguro de que deseas borrar todo tu historial de exámenes?")) {
+                examHistory = [];
+                localStorage.removeItem('examHistory');
+                renderHistoryAttempts();
+            }
+        }
+    </script>
+</body>
+</html>
