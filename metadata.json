@@ -1,0 +1,6 @@
+{
+  "name": "Tutor Clínico UCS",
+  "description": "App de estudio intensivo de 48h para Morfofisiopatología Humana I, ajustado al modelo de la Universidad de las Ciencias de la Salud (UCS).",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
