@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="es" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tutor Clínico UCS - Plan de Choque 48H</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        clinical: {
+                            bg: '#0B0F19',
+                            surface: '#151D30',
+                            surfaceVar: '#1F2B48',
+                            border: '#2B3A5A',
+                            primary: '#0D9488',
+                            primaryLight: '#2DD4BF',
+                            secondary: '#2563EB',
+                            accent: '#F59E0B',
+                            correct: '#10B981',
+                            incorrect: '#EF4444'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <!-- FontAwesome para Iconos Médicos -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            background-color: #0B0F19;
+            color: #F3F4F6;
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Ubuntu, sans-serif;
+        }
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0B0F19;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1F2B48;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #2B3A5A;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased">
+
+    <!-- Encabezado / Barra de Navegación -->
+    <header class="bg-clinical-surface border-b border-clinical-border sticky top-0 z-40">
+        <div class="max-w-6xl mx-auto px-4 py-3 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="bg-clinical-primary/20 p-2 rounded-xl border border-clinical-primaryLight/30">
+                    <i class="fa-solid fa-user-doctor text-clinical-primaryLight text-2xl animate-pulse"></i>
+                </div>
+                <div>
+                    <h1 class="text-xl font-bold text-clinical-primaryLight tracking-tight flex items-center gap-2">
+                        Tutor Clínico UCS <span class="text-xs bg-clinical-accent/20 text-clinical-accent px-2 py-0.5 rounded border border-clinical-accent/30 font-semibold">PLAN 48H</span>
+                    </h1>
+                    <p class="text-xs text-slate-400">Morfofisiopatología Humana I • Medicina Integral Comunitaria</p>
+                </div>
+            </div>
+            
+            <!-- Entrada Opcional de API Key de Gemini -->
+            <div class="flex items-center gap-2 w-full md:w-auto">
+                <div class="relative w-full">
+                    <i class="fa-solid fa-key absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-xs"></i>
+                    <input type="password" id="api-key-input" placeholder="GEMINI_API_KEY (Opcional)" 
+                           class="w-full md:w-60 bg-clinical-bg text-xs rounded-lg pl-8 pr-3 py-2 border border-clinical-border focus:border-clinical-primary focus:outline-none transition text-slate-200">
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Pestañas de la Aplicación -->
+    <div class="bg-clinical-surface border-b border-clinical-border sticky top-[69px] z-30">
+        <div class="max-w-6xl mx-auto px-4 flex justify-around">
+            <button onclick="switchTab('plan')" id="tab-btn-plan" class="flex-1 py-3 px-2 text-center border-b-2 border-clinical-primaryLight text-clinical-primaryLight font-bold text-sm flex items-center justify-center gap-2 transition hover:bg-clinical-bg/50">
+                <i class="fa-solid fa-hourglass-half"></i> <span class="hidden sm:inline">PLAN DE CHOQUE 48H</span><span class="sm:hidden">PLAN 48H</span>
+            </button>
+            <button onclick="switchTab('study')" id="tab-btn-study" class="flex-1 py-3 px-2 text-center border-b-2 border-transparent text-slate-400 font-bold text-sm flex items-center justify-center gap-2 transition hover:bg-clinical-bg/50">
+                <i class="fa-solid fa-book-open"></i> <span class="hidden sm:inline">MÓDULO DE ESTUDIO</span><span class="sm:hidden">ESTUDIO</span>
+            </button>
+            <button onclick="switchTab('simulator')" id="tab-btn-simulator" class="flex-1 py-3 px-2 text-center border-b-2 border-transparent text-slate-400 font-bold text-sm flex items-center justify-center gap-2 transition hover:bg-clinical-bg/50">
+                <i class="fa-solid fa-circle-check"></i> <span class="hidden sm:inline">SIMULADOR EXAMEN</span><span class="sm:hidden">SIMULADOR</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Contenido Principal -->
+    <main class="flex-grow max-w-6xl w-full mx-auto px-4 py-6">
+
+        <!-- ================= PESTAÑA 1: PLAN DE CHOQUE 48H ================= -->
+        <section id="tab-content-plan" class="space-y-6">
+            
+            <div class="bg-clinical-surfaceVar rounded-2xl border border-clinical-border p-6 shadow-xl">
+                <div class="flex flex-col md:flex-row gap-6 items-center justify-between">
+                    <div class="space-y-2 max-w-2xl">
+                        <div class="flex items-center gap-2 text-clinical-primaryLight font-bold text-sm uppercase tracking-wider">
+                            <i class="fa-solid fa-shield-halved"></i> Atención Primaria de Salud (APS)
+                        </div>
+                        <h2 class="text-2xl font-black text-white">Cronograma Intensivo de 2 Días</h2>
+                        <p class="text-sm text-slate-300">
+                            Programa diseñado bajo el modelo evaluativo de la Universidad de las Ciencias de la Salud (UCS) en Venezuela. Registra tus temas con dificultad y genera un itinerario de estudio personalizado.
+                        </p>
+                    </div>
+                    <div class="bg-clinical-bg/50 p-4 rounded-xl border border-clinical-border text-center min-w-[180px]">
+                        <span class="text-xs text-slate-400 font-bold block mb-1">PROGRESO DEL PLAN</span>
+                        <div class="text-3xl font-black text-clinical-primaryLight" id="progress-text">0 / 8</div>
+                        <span class="text-xs text-slate-500 block mb-2">Temas Completados</span>
+                        <div class="w-full bg-clinical-surfaceVar h-2.5 rounded-full overflow-hidden">
+                            <div class="bg-clinical-primary h-full transition-all duration-500" id="progress-bar" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Diagnóstico con IA -->
+            <div class="bg-clinical-surface rounded-2xl border border-clinical-border p-6 shadow-lg space-y-4">
+                <div class="flex items-center gap-2">
+                    <i class="fa-solid fa-wand-magic-sparkles text-clinical-accent"></i>
+                    <h3 class="text-lg font-bold text-white">Diagnóstico de Debilidades con IA</h3>
+                </div>
+                <p class="text-xs text-slate-400">
+                    Introduce los temas clínicos que te cuestan dominar (ej: <i>saponificación de grasas, ley de Hardy-Weinberg, apoptosis, etc.</i>).
+                </p>
+                <div class="flex flex-col sm:flex-row gap-3">
+                    <input type="text" id="weak-areas-input" placeholder="Ej: No entiendo bien el aclaramiento de la necrosis caseosa..." 
+                           class="flex-grow bg-clinical-bg text-sm rounded-xl px-4 py-3 border border-clinical-border focus:border-clinical-primary focus:outline-none text-slate-100 placeholder-slate-500">
+                    <button onclick="generateSchedule()" id="diagnostic-btn" class="bg-clinical-primary hover:bg-clinical-primary/80 text-white font-bold text-sm px-6 py-3 rounded-xl transition flex items-center justify-center gap-2 shrink-0">
+                        <i class="fa-solid fa-stethoscope"></i> Diagnosticar con IA
+                    </button>
+                </div>
+
+                <div id="diagnostic-output" class="hidden bg-clinical-surfaceVar border border-clinical-primary/30 rounded-xl p-4 space-y-3">
+                    <div class="flex items-center justify-between">
+                        <h4 class="text-sm font-bold text-clinical-primaryLight flex items-center gap-2">
+                            <i class="fa-solid fa-clipboard-list"></i> Cronograma de Choque UCS Generado por IA
+                        </h4>
+                        <button onclick="clearDiagnostic()" class="text-slate-400 hover:text-white transition text-xs">
+                            <i class="fa-solid fa-circle-xmark"></i> Ocultar
+                        </button>
+                    </div>
+                    <div class="text-xs text-slate-200 leading-relaxed whitespace-pre-line" id="diagnostic-text"></div>
+                </div>
+            </div>
+
+            <!-- Mapa de Ruta de los 4 Bloques -->
+            <div class="space-y-4">
+                <h3 class="text-lg font-bold text-white flex items-center gap-2">
+                    <i class="fa-solid fa-route text-clinical-primaryLight"></i> Ruta del Plan de Choque (4 Bloques Clave)
+                </h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6" id="blocks-container"></div>
+            </div>
+
+        </section>
+
+        <!-- ================= PESTAÑA 2: MÓDULO DE ESTUDIO ================= -->
+        <section id="tab-content-study" class="hidden space-y-6">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Selectores de Contenido (Lateral) -->
+                <div class="space-y-4 lg:col-span-1">
+                    <div class="bg-clinical-surface rounded-2xl border border-clinical-border p-4 space-y-4">
+                        <h3 class="text-sm font-bold text-clinical-primaryLight tracking-wider uppercase">Bloques del Programa</h3>
+                        <div class="flex flex-col gap-2" id="study-blocks-list"></div>
+                    </div>
+                    <div class="bg-clinical-surface rounded-2xl border border-clinical-border p-4 space-y-4">
+                        <h3 class="text-sm font-bold text-clinical-primaryLight tracking-wider uppercase">Temas Clínicos</h3>
+                        <div class="flex flex-col gap-2" id="study-themes-list"></div>
+                    </div>
+                </div>
+
+                <!-- Detalles del Tema y Tarjetas -->
+                <div class="lg:col-span-2 space-y-6">
+                    
+                    <div class="bg-clinical-surface rounded-2xl border border-clinical-border p-6 space-y-6" id="study-content-card">
+                        <div class="flex items-center justify-between flex-wrap gap-3">
+                            <h3 class="text-xl font-black text-white" id="study-theme-title">Selecciona un tema</h3>
+                            <button id="mark-complete-btn" class="bg-clinical-primary/10 border border-clinical-primary/30 text-clinical-primaryLight text-xs font-bold px-3 py-1.5 rounded-lg hover:bg-clinical-primary/20 transition flex items-center gap-1">
+                                <i class="fa-solid fa-circle-check"></i> Marcar como Completado
+                            </button>
+                        </div>
+
+                        <div class="space-y-2">
+                            <h4 class="text-xs font-bold text-clinical-secondary uppercase tracking-widest flex items-center gap-1">
+                                <i class="fa-solid fa-heart-pulse"></i> Fisiopatología, Clínica y Abordaje Comunitario (APS)
+                            </h4>
+                            <p class="text-sm text-slate-200 leading-relaxed text-justify" id="study-theme-synthesis">
+                                Selecciona un tema clínico del panel izquierdo para comenzar tu repaso intensivo.
+                            </p>
+                        </div>
+
+                        <hr class="border-clinical-border">
+
+                        <div class="space-y-3">
+                            <h4 class="text-xs font-bold text-clinical-accent uppercase tracking-widest flex items-center gap-1">
+                                <i class="fa-solid fa-bullseye"></i> Puntos Focalizados UCS (Lo que van a preguntar)
+                            </h4>
+                            <ul class="space-y-2 text-xs text-slate-300" id="study-theme-focus"></ul>
+                        </div>
+                    </div>
+
+                    <!-- Flashcards de Repaso Rápido -->
+                    <div class="bg-clinical-surface rounded-2xl border border-clinical-border p-6 space-y-4">
+                        <h3 class="text-base font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-bolt text-clinical-accent"></i> Tarjetas de Memorización Inmediata (High-Yield)
+                        </h3>
+                        <p class="text-xs text-slate-400">Haz clic en cada tarjeta para revelar los datos clave y nemotecnias críticas del examen.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="study-flashcards-container"></div>
+                    </div>
+
+                    <!-- Bloc de Notas Clínicas Persistente (LocalStorage) -->
+                    <div class="bg-clinical-surface rounded-2xl border border-clinical-border p-6 space-y-4">
+                        <h3 class="text-base font-bold text-white flex items-center gap-2">
+                            <i class="fa-solid fa-pen-to-square text-clinical-primaryLight"></i> Mis Notas Clínicas (Persistencia Local)
+                        </h3>
+                        <p class="text-xs text-slate-400">Guarda tus observaciones, mnemotecnias o apuntes de guardia. Se guardan automáticamente y no se borran al recargar.</p>
+                        <textarea id="theme-notes-input" placeholder="Escribe tus notas de estudio aquí..." 
+                                  class="w-full h-32 bg-clinical-bg text-sm rounded-xl p-4 border border-clinical-border focus:border-clinical-primary focus:outline-none text-slate-100 placeholder-slate-600 resize-none"></textarea>
+                        <div class="flex items-center justify-between">
+                            <span id="notes-status" class="text-xs text-clinical-correct font-semibold opacity-0 transition-opacity duration-300 flex items-center gap-1">
+                                <i class="fa-solid fa-circle-check"></i> ¡Guardado local persistente con éxito!
+                            </span>
+                            <button onclick="saveThemeNotes()" class="bg-clinical-primary hover:bg-clinical-primary/80 text-white font-bold text-xs px-5 py-2.5 rounded-lg transition">
+                                <i class="fa-solid fa-floppy-disk"></i> Guardar Nota del Tema
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ================= PESTAÑA 3: SIMULADOR EXAMEN ================= -->
+        <section id="tab-content-simulator" class="hidden space-y-6">
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Navegador de Preguntas e Historial -->
+                <div class="space-y-4 lg:col-span-1">
+                    <div class="bg-clinical-surface rounded-2xl border border-clinical-border p-4 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-sm font-bold text-clinical-primaryLight tracking-wider uppercase">Listado de Preguntas</h3>
+                            <button onclick="resetExam()" class="text-slate-400 hover:text-white transition text-xs flex items-center gap-1">
+                                <i class="fa-solid fa-rotate-left"></i> Reiniciar
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-3 sm:grid-cols-6 lg:grid-cols-3 gap-2" id="sim-questions-grid"></div>
+                    </div>
+
+                    <div class="bg-clinical-surface rounded-2xl border border-clinical-border p-4 space-y-4">
+                        <div class="flex items-center justify-between">
+                            <h3 class="text-sm font-bold text-clinical-primaryLight tracking-wider uppercase">Historial de Intentos</h3>
+                            <button onclick="clearHistory()" class="text-xs text-clinical-incorrect hover:underline">Borrar</button>
+                        </div>
+                        <div class="space-y-2 text-xs" id="sim-attempts-history"></div>
+                    </div>
+                </div>
+
+                <!-- Área Activa de Pregunta -->
+                <div class="lg:col-span-2 space-y-6">
+                    <div class="bg-clinical-surface rounded-2xl border border-clinical-border p-6 space-y-6">
+                        
+                        <div class="flex items-center justify-between flex-wrap gap-2">
+                            <span class="text-xs font-bold text-clinical-secondary uppercase tracking-widest" id="sim-question-type">CASO CLÍNICO</span>
+                            <span class="text-xs bg-clinical-surfaceVar border border-clinical-border text-slate-300 font-bold px-2 py-1 rounded-md" id="sim-question-index">Pregunta 1 de 6</span>
+                        </div>
+
+                        <h3 class="text-lg font-bold text-white text-justify leading-relaxed" id="sim-question-text">Cargando pregunta...</h3>
+
+                        <!-- Opciones según el Tipo -->
+                        <div id="sim-options-container" class="space-y-3 hidden"></div>
+                        <div id="sim-text-container" class="space-y-2">
+                            <label class="text-xs font-semibold text-slate-400">Tu respuesta fundamentada basada en la literatura UCS:</label>
+                            <textarea id="sim-text-input" placeholder="Escribe detalladamente tu respuesta y razonamiento clínico..." 
+                                      class="w-full h-36 bg-clinical-bg text-sm rounded-xl p-4 border border-clinical-border focus:border-clinical-primary focus:outline-none text-slate-100 placeholder-slate-600 resize-none"></textarea>
+                        </div>
+
+                        <!-- Fila de Acciones -->
+                        <div class="flex items-center justify-between gap-4 pt-2">
+                            <button onclick="prevQuestion()" id="sim-prev-btn" class="bg-clinical-surfaceVar hover:bg-clinical-surfaceVar/80 text-white font-bold text-xs px-4 py-2.5 rounded-lg transition disabled:opacity-30 disabled:pointer-events-none">
+                                <i class="fa-solid fa-arrow-left"></i> Anterior
+                            </button>
+
+                            <button onclick="evaluateAnswer()" id="sim-eval-btn" class="bg-clinical-primary hover:bg-clinical-primary/80 text-white font-black text-sm px-6 py-2.5 rounded-xl transition flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-microchip"></i> Evaluar Respuesta con IA
+                            </button>
+
+                            <button onclick="nextQuestion()" id="sim-next-btn" class="bg-clinical-surfaceVar hover:bg-clinical-surfaceVar/80 text-white font-bold text-xs px-4 py-2.5 rounded-lg transition disabled:opacity-30 disabled:pointer-events-none">
+                             
